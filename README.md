@@ -1,1 +1,1 @@
-# ML_Trading_Bot
+# ML Trading Bot
