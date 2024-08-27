@@ -6,6 +6,7 @@ from lumibot.traders import Trader                      #Gives deployemnt capabi
 from datetime import datetime
 from alpaca_trade_api import REST
 from timedelta import Timedelta
+from finbert import get_sentiment
 
 API_KEY_ID = creds.API_KEY_ID
 API_SECRET_KEY = creds.API_SECRET_KEY
@@ -18,12 +19,12 @@ ALPACA_CREDS = {
 }
 
 CASH_AT_RISK = 0.5
-START_DATE = datetime(2022,1,1)
-END_DATE = datetime(2022,3,28)
+START_DATE = datetime(2020,1,1)
+END_DATE = datetime(2023,12,31)
 
 
 class TradingStrategy(Strategy):
-    """Contains the core strategy for the training bo t"""
+    """Contains the core strategy for the training bot"""
 
     def initialize(self, symbol:str="SPY", cash_at_risk:float=CASH_AT_RISK):
         self.symbol = symbol
@@ -45,34 +46,46 @@ class TradingStrategy(Strategy):
         days_prior = today - Timedelta(days=amount_of_days_prior)
         return days_prior.strftime("%Y-%m-%d"), today.strftime("%Y-%m-%d")
 
-
-    def get_news(self):
+    def get_news_sentiment(self):
         days_prior, today = self.get_day_interval(3)
         news = self.api.get_news(self.symbol, start=days_prior, end=today)
 
         headlines = [ev.__dict__["_raw"]["headline"] for ev in news]
-        summaries = [ev.__dict__["_raw"]["summary"] for ev in news]
+        #summaries = [ev.__dict__["_raw"]["summary"] for ev in news]
 
-        return headlines, summaries
+        probability, sentiment = get_sentiment(headlines)
+
+        return probability, sentiment
 
 
     def on_trading_iteration(self):
         cash, last_price, quantity = self.position_sizing()
+        probability, sentiment = self.get_news_sentiment()
 
-        ### Check if fractional trading is supported
-        if self.last_trade == None:
-            headlines, summaries = self.get_news()
-            print(headlines)
-            print("\n\n\n")
-            print(summaries)
-
-            order = self.create_order(self.symbol, quantity, "buy", type="bracket",
-                                      take_profit_price = last_price * 1.15, stop_loss_price = last_price * 0.90)
-            self.submit_order(order)
+        if sentiment == "positive" and probability > .999: 
+            if self.last_trade == "sell": 
+                self.sell_all() 
+            order = self.create_order(self.symbol,
+                                        quantity,
+                                        "buy",
+                                        type="bracket",
+                                        take_profit_price=last_price*1.20,
+                                        stop_loss_price=last_price*.95)
+            self.submit_order(order) 
             self.last_trade = "buy"
 
-
-
+        elif sentiment == "negative" and probability > .999: 
+            if self.last_trade == "buy": 
+                self.sell_all() 
+            order = self.create_order(self.symbol,
+                                        quantity,
+                                        "sell",
+                                        type="bracket", 
+                                        take_profit_price=last_price*.8, 
+                                        stop_loss_price=last_price*1.05
+                                        )
+            self.submit_order(order) 
+            self.last_trade = "sell"
 
 
 broker = Alpaca(ALPACA_CREDS)
