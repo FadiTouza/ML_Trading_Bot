@@ -23,7 +23,7 @@ def get_sentiment(news):
     Estimates the sentiment of given news articles.
 
     Args:
-        news (list of str): The news articles to analyze.
+        news (list of str): The news to analyze.
 
     Returns:
         tuple:
@@ -42,6 +42,7 @@ def get_sentiment(news):
         # Determine the highest probability sentiment
         probability = result[torch.argmax(result)]
         sentiment = labels[torch.argmax(result)]
+        
         return probability, sentiment
     else:
         # Return neutral sentiment with zero probability if no news is provided
@@ -50,7 +51,7 @@ def get_sentiment(news):
 
 if __name__ == "__main__":
     """
-    Example usage of the get_sentiment function.
+    Example usage of the get_sentiment() function.
     """
     tensor, sentiment = get_sentiment(['Top companies show bad performance on quarterly report.'])
     print(tensor, sentiment)
