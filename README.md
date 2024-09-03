@@ -19,7 +19,7 @@ This project is suitable for developers, data scientists, and financial enthusia
 
 ### Prerequisites
 Before you begin, ensure you have the following installed on your system:
-- **Python 3.x**: The programming language used for this project.
+- **Python 3.10.9**: The programming language used for this project.
 - **pip**: Python package manager.
 - **Git**: Version control system.
 
@@ -27,7 +27,6 @@ Before you begin, ensure you have the following installed on your system:
 1. Clone the repository:
     ```bash
     git clone https://github.com/FadiTouza/ML_Trading_Bot.git
-    cd ML_Trading_Bot
     ```
 
 2. Install the required Python packages:
@@ -37,13 +36,13 @@ Before you begin, ensure you have the following installed on your system:
 
 ## Usage
 
-Once the installation is complete, you can start using the ML Trading Bot. Below is an example of how to run the bot:
+Once the installation is complete, you can start using the ML trading bot. Below is an example of how to run the bot:
 
 1. **Configuration**: Set up your trading parameters and API keys in the `creds.py` file.
    
 2. **Running the Bot**: Currently the bot only supports backtesting using historical data to validate the strategy before live trading. To do this, run:
     ```bash
-    python trading_bot.py
+    python ML_trading_bot.py
     ```
 
 4. **Examples**:
