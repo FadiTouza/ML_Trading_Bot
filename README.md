@@ -9,11 +9,10 @@ This project is suitable for developers, data scientists, and financial enthusia
 ## Table of Contents
 1. [Installation](#installation)
 2. [Usage](#usage)
-3. [Contributing](#contributing)
-4. [Coming Features](#coming-features)
-5. [License](#license)
-6. [Authors](#authors)
-7. [Acknowledgments](#acknowledgments)
+3. [Coming Features](#coming-features)
+4. [License](#license)
+5. [Authors](#authors)
+6. [Acknowledgments](#acknowledgments)
 
 ## Installation
 
@@ -48,16 +47,6 @@ Once the installation is complete, you can start using the ML trading bot. Below
 4. **Examples**:
    - **Basic Trading**: The bot executes trades based on the model's predictions.
    - **Advanced Configuration**: Customize the trading strategy and risk management settings.
-
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to the ML Trading Bot, please follow these guidelines:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
 
 ## Coming Features
 1. Find better news sources for the model through webscraping or other backtesting tools
